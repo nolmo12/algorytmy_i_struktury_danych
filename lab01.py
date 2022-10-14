@@ -38,3 +38,11 @@ def f(x):
 
 lista=[1,2,3,4,5]
 print(type(f(lista)))
+#Zadanie 8.
+lista=[]
+for x in range(10):
+    a=input("Podaj wartosc")
+    lista.append(a)
+krotka=tuple(y for y in lista)
+print(type(krotka))
+print(krotka)
