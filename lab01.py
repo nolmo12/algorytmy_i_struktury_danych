@@ -32,3 +32,9 @@ for x in range(100):
     else:
         break
 #Zadanie 7.
+def f(x):
+    wynik=tuple((y for y in x))
+    return wynik
+
+lista=[1,2,3,4,5]
+print(type(f(lista)))
