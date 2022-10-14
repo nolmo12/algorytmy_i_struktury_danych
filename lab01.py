@@ -58,3 +58,10 @@ def f(x):
         7:'Niedziela',
     }.get(x,'Zly Dzien tygodnia')
 print(f(7))
+#zadanie 10.
+def czyPalindrom(napis):
+    for x in range(int(len(napis)/2)):
+        if(napis[x]!=napis[(len(napis)-1)-x]):
+            return False
+    return True
+print(czyPalindrom('1211'))
