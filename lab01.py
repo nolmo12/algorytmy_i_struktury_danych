@@ -46,3 +46,15 @@ for x in range(10):
 krotka=tuple(y for y in lista)
 print(type(krotka))
 print(krotka)
+#zadanie 9.
+def f(x):
+    return{
+        1:'Poniedziałek',
+        2:'Wtorek',
+        3:'Środa',
+        4:'Czwartek',
+        5:'Piątek',
+        6:'Sobota',
+        7:'Niedziela',
+    }.get(x,'Zly Dzien tygodnia')
+print(f(7))
