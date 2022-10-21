@@ -81,6 +81,55 @@ class LinkedList:
         return pom
 
 
+class Stack:
+    def __init__(self):
+            self.storage=LinkedList()
+
+    def push(self, element:Any):
+        self.storage.push(element)
+
+    def pop(self)->Any:
+        self.storage.pop()
+
+    def print(self):
+        temp = self.storage.head
+        while (temp):
+            if temp.next is None:
+                print(temp.data)
+            else:
+                print(temp.data)
+            temp = temp.next
+
+    def len(self):
+        dlugosc = 0
+        temp = self.head
+        while (temp):
+            dlugosc += 1
+            temp = temp.next
+        return dlugosc
+
+
+class Queue:
+    def __init__(self):
+            self.storage=LinkedList()
+
+    def peek(self):
+        return self.storage.head.data
+
+    def enqueue(self, element:Any):
+        self.storage.append(element)
+
+    def dequeue(self):
+        self.storage.pop()
+
+    def print(self):
+        temp = self.storage.head
+        while (temp):
+            if temp.next is None:
+                 print(temp.data)
+            else:
+                print(temp.data, ", ", end="")
+            temp = temp.next
 lista=LinkedList()
 lista.push(3)
 lista.push(5)
@@ -92,3 +141,19 @@ lista.pop()
 lista.remove_last()
 lista.remove(lista.head)
 lista.print()
+stos=Stack()
+stos.push(5)
+stos.push(15)
+stos.push(53)
+stos.pop()
+stos.push(44)
+stos.print()
+kolejka=Queue()
+kolejka.enqueue('klient1')
+kolejka.enqueue('klient2')
+kolejka.enqueue('klient3')
+print(kolejka.peek())
+kolejka.print()
+kolejka.dequeue()
+print(kolejka.peek())
+kolejka.print()
