@@ -73,7 +73,12 @@ class LinkedList:
             return
         temp=after.next.next
         after.next=temp
-
+    
+    def node(self,at:int)->Node:
+        pom=self.head
+        for x in range(at):
+            pom=pom.next
+        return pom
 
 
 lista=LinkedList()
