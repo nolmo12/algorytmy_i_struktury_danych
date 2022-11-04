@@ -88,11 +88,11 @@ def _printParenthesis(str, pos, n,
         return
     else:
         if (open > close):
-            str[pos] = '}'
+            str[pos] = ')'
             _printParenthesis(str, pos + 1, n,
                               open, close + 1)
         if (open < n):
-            str[pos] = '{'
+            str[pos] = '('
             _printParenthesis(str, pos + 1, n,
                               open + 1, close)
 
