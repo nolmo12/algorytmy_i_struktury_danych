@@ -10,6 +10,27 @@ class Tree:
     def __init__(self, drzewo):
         self.root:'TreeNode'=drzewo
 
+    def add(self, value:Any, parent_name:Any):
+        parent_name.children.append(TreeNode(value))
+
+    def for_each_deep_first(self, visit:Callable[['TreeNode'], None]) -> None:
+        visit(self)
+        for x in self.root.children:
+            x.for_each_deep_first(visit)
+    def for_each_level_order(self,visit: Callable[['TreeNode'], None]) -> None:
+        queue=Queue()
+        queue.enqueue(self.root)
+        while(queue.storage.len()>0):
+            n=queue.storage.len()
+            while(n>0):
+                p=queue.peek()
+                queue.dequeue()
+                visit(p)
+                for x in range(len(p.children)):
+                    queue.enqueue(p.children[x])
+                n-=1
+
+
 class TreeNode:
     def __init__(self, value:Any):
         self.value=value
@@ -36,12 +57,9 @@ class TreeNode:
                     break
 
     def for_each_deep_first(self, visit: Callable[['TreeNode'], None]) -> None:
-        if(isinstance(self, TreeNode)):
-            visit(self.value)
-        else:
-            visit(self)
+        visit(self)
         for x in self.children:
-             x.for_each_deep_first_search(visit)
+             x.for_each_deep_first(visit)
 
     def for_each_level_order(self,visit: Callable[['TreeNode'], None]) -> None:
         queue=Queue()
@@ -51,8 +69,7 @@ class TreeNode:
             while(n>0):
                 p=queue.peek()
                 queue.dequeue()
-                if(visit(p.value)):
-                    return p
+                visit(p)
                 for x in range(len(p.children)):
                     queue.enqueue(p.children[x])
                 n-=1
@@ -85,12 +102,16 @@ drzewo.children[1].add(TreeNode(4))
 #drzewo.for_each_level_order(print)
 a=drzewo.search(7)
 print(a)
-b=drzewo.search(4)
-print(b)
-c=drzewo.search(122)
-print(c)
-d=drzewo.search(5)
-print(d)
-e=drzewo.search(5)
-print(e)
-print(drzewo.for_each_deep_first(f))
+# b=drzewo.search(4)
+# print(b)
+# c=drzewo.search(122)
+# print(c)
+# d=drzewo.search(5)
+# print(d)
+# e=drzewo.search(5)
+# print(e)
+#drzewo.for_each_level_order(print)
+tree=Tree(drzewo)
+tree.add(3, a)
+#tree.for_each_deep_first(f)
+#tree.for_each_level_order(print)
