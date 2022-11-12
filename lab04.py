@@ -4,15 +4,16 @@ from queue import *
 from linkedlist import *
 
 global wezel
-wezel=None
+wezel = None
 global dot
-dot = graphviz.Digraph('drzewo')
+dot = graphviz.Digraph('Drzewo')
+
 
 class Tree:
     def __init__(self, drzewo: 'TreeNode'):
         self.root: 'TreeNode' = drzewo
 
-    def add(self, value:Any, parent_name: Any):
+    def add(self, value: Any, parent_name: Any) -> None:
         parent_name.children.append(TreeNode(value))
 
     def for_each_deep_first(self, visit: Callable[['Tree'], None]) -> None:
@@ -20,6 +21,7 @@ class Tree:
 
     def for_each_level_order(self, visit: Callable[['Tree'], None]) -> None:
         self.root.for_each_level_order(visit)
+
 
 class TreeNode:
     def __init__(self, value: Any):
@@ -41,14 +43,14 @@ class TreeNode:
              x.for_each_deep_first(visit)
 
     def for_each_deep_first_search(self, visit: Callable[['TreeNode'], None]) -> 'TreeNode':
-        if(visit(self.value)==True):
+        if visit(self.value) == True:
             global wezel
-            wezel=self
+            wezel = self
             return wezel
         else:
             for x in self.children:
                 x.for_each_deep_first_search(visit)
-                if(wezel):
+                if wezel:
                     break
 
     def for_each_level_order(self,visit: Callable[['TreeNode'], None]) -> None:
@@ -64,17 +66,17 @@ class TreeNode:
                     queue.enqueue(p.children[x])
                 n-=1
 
-    def search(self, value:Any) -> Union['TreeNode', None]:
+    def search(self, value: Any) -> Union['TreeNode', None]:
         self.for_each_deep_first_search(lambda a: a == value)
         global wezel
-        wynik=wezel
-        wezel=None
+        wynik = wezel
+        wezel = None
         return wynik
 
     def show(self, dot):
-        dot.node(str(self.value))
+        dot.node(str(self), str(self.value))
         for x in self.children:
-            dot.edge(str(self.value), str(x.value))
+            dot.edge(str(self), str(x))
             x.show(dot)
         return dot
 
@@ -86,30 +88,27 @@ def print(adres:'TreeNode')->None:
     else:
         f(adres)
 
-drzewo = TreeNode(10)
-drzewo.add(TreeNode(9))
-drzewo.add(TreeNode(8))
-
-drzewo.children[0].add(TreeNode(7))
-drzewo.children[0].children[0].add(TreeNode(5))
+drzewo = TreeNode(1)
+drzewo.add(TreeNode(2))
+drzewo.add(TreeNode(3))
+drzewo.add(TreeNode(4))
+drzewo.children[0].add(TreeNode(5))
 drzewo.children[0].add(TreeNode(6))
-drzewo.children[1].add(TreeNode(4))
+drzewo.children[2].add(TreeNode(7))
+drzewo.children[0].children[0].add(TreeNode(8))
+drzewo.children[0].children[0].add(TreeNode(9))
 
-#print(drzewo.children[0].is_leaf())
-# drzewo.for_each_deep_first(print)
-# drzewo.for_each_level_order(print)
+drzewo.for_each_deep_first(print)
 
-a=drzewo.search(7)
-b=drzewo.search(5)
-tree = Tree(drzewo)
-tree.add(3, b)
-tree.add(2, a)
-a=drzewo.search(7)
-tree.add(1, a)
-tree.add(0, tree.root.children[1])
-# tree.for_each_deep_first(print)
+print("-------")
+
+drzewo.for_each_level_order(print)
+
+a = drzewo.search(4)
+b = drzewo.search(6)
+caledrzewo = Tree(drzewo)
+
+caledrzewo.add(10, a)
+caledrzewo.add(11, b)
 
 drzewo.show(dot).render(directory='doctest-output', view=True).replace('\\', '/')
-#tree.show().render(directory='doctest-output', view=True).replace('\\', '/')
-
-#tree.for_each_level_order(print)
