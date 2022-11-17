@@ -3,24 +3,24 @@ from typing import List, Callable, Union
 from queue import *
 from linkedlist import *
 
-global wezel
-wezel = None
-global dot
-dot = graphviz.Digraph('Drzewo')
-
-
 class Tree:
     def __init__(self, drzewo: 'TreeNode'):
         self.root: 'TreeNode' = drzewo
 
     def add(self, value: Any, parent_name: Any) -> None:
-        parent_name.children.append(TreeNode(value))
+        if not parent_name:
+            raise Exception("Nie prawidłowy rodzic")
+        else:
+            parent_name.children.append(TreeNode(value))
 
     def for_each_deep_first(self, visit: Callable[['Tree'], None]) -> None:
         self.root.for_each_deep_first(visit)
 
     def for_each_level_order(self, visit: Callable[['Tree'], None]) -> None:
         self.root.for_each_level_order(visit)
+
+    def show(self, dot):
+        return self.root.show(dot)
 
 
 class TreeNode:
@@ -29,7 +29,7 @@ class TreeNode:
         self.children: List['TreeNode'] = []
 
     def is_leaf(self) -> bool:
-        if len(self.children)==0:
+        if len(self.children) == 0:
             return True
         else:
             return False
@@ -43,7 +43,7 @@ class TreeNode:
              x.for_each_deep_first(visit)
 
     def for_each_deep_first_search(self, visit: Callable[['TreeNode'], None]) -> 'TreeNode':
-        if visit(self.value) == True:
+        if visit(self.value):
             global wezel
             wezel = self
             return wezel
@@ -57,18 +57,17 @@ class TreeNode:
         queue = Queue()
         queue.enqueue(self)
         while queue.storage.len()>0:
-            n = queue.storage.len()
-            while n>0:
-                p = queue.peek()
-                queue.dequeue()
-                visit(p)
-                for x in range(len(p.children)):
-                    queue.enqueue(p.children[x])
-                n-=1
+            p = queue.peek()
+            queue.dequeue()
+            visit(p)
+            for x in p.children:
+                queue.enqueue(x)
 
     def search(self, value: Any) -> Union['TreeNode', None]:
         self.for_each_deep_first_search(lambda a: a == value)
         global wezel
+        if not wezel:
+            return "Nie znaleziono"
         wynik = wezel
         wezel = None
         return wynik
@@ -88,27 +87,28 @@ def print(adres:'TreeNode')->None:
     else:
         f(adres)
 
-drzewo = TreeNode(1)
-drzewo.add(TreeNode(2))
-drzewo.add(TreeNode(3))
-drzewo.add(TreeNode(4))
-drzewo.children[0].add(TreeNode(5))
-drzewo.children[0].add(TreeNode(6))
-drzewo.children[2].add(TreeNode(7))
-drzewo.children[0].children[0].add(TreeNode(8))
-drzewo.children[0].children[0].add(TreeNode(9))
+global wezel
+wezel = None
+global dot
+dot = graphviz.Digraph('Drzewo')
 
-drzewo.for_each_deep_first(print)
+tree=Tree(TreeNode('F'))
+a = tree.root.search('F')
+tree.add('B', a)
+tree.add('G', tree.root.search('F'))
+tree.add('I', tree.root.search('G'))
+tree.add('H', tree.root.search('I'))
+tree.add('A', tree.root.search('B'))
+tree.add('D', tree.root.search('B'))
+tree.add('C', tree.root.search('D'))
+tree.add('E', tree.root.search('D'))
 
-print("-------")
+tree.for_each_level_order(print)
 
-drzewo.for_each_level_order(print)
+print('----------------')
 
-a = drzewo.search(4)
-b = drzewo.search(6)
-caledrzewo = Tree(drzewo)
+tree.for_each_deep_first(print)
 
-caledrzewo.add(10, a)
-caledrzewo.add(11, b)
+tree.show(dot).render(directory='doctest-output', view=True).replace('\\', '/')
 
-drzewo.show(dot).render(directory='doctest-output', view=True).replace('\\', '/')
+#list.reverse()
