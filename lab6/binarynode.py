@@ -20,6 +20,13 @@ class BinaryNode:
         if self.left_child is not None:
             self.left_child.traverse_in_order(visit)
 
+        visit(self)
+
+        if self.right_child is not None:
+            self.right_child.traverse_in_order(visit)
+
+
+
 
 f = print
 
